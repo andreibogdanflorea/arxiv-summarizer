@@ -21,7 +21,6 @@ def custom_rate_limit_handler(request: Request, exc: RateLimitExceeded):
     return response
 
 
-# testing?
 app = FastAPI(
     title="Research Paper Summarizer",
     description="Retrieves and summarizes the latest arXiv papers based on your knowledge level.",
