@@ -3,7 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 
+
 from src.api.routes import router as api_router, limiter
+from src.database.connection import init_db
 
 
 def custom_rate_limit_handler(request: Request, exc: RateLimitExceeded):
@@ -27,6 +29,10 @@ app = FastAPI(
 )
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, custom_rate_limit_handler)
+
+@app.on_event("startup")
+def on_startup():
+    init_db()
 
 # app.add_middleware(
 #     CORSMiddleware,
