@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  flake8-lint:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,6 +18,8 @@ jobs:
       - name: Install uv
         run: pip install uv
       - name: Install dependencies
-        run: uv add --dev flake8
+        run: uv add --dev black flake8
+      - name: Run black (check only)
+        run: uv run black --check src/
       - name: Run flake8
         run: uv run flake8 src/

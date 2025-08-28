@@ -7,5 +7,7 @@ from src.models.knowledge_level import KnowledgeLevel
 
 class AbstractSummarizer(ABC):
     @abstractmethod
-    def summarize(self, papers: List[Paper], level: KnowledgeLevel) -> List[PaperSummary]:
+    def summarize(
+        self, papers: List[Paper], level: KnowledgeLevel
+    ) -> List[PaperSummary]:
         pass

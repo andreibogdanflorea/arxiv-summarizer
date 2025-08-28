@@ -1,4 +1,3 @@
-from typing import List
 from enum import Enum
 
 from src.processing.prompts import build_prompt
@@ -14,7 +13,7 @@ class Summarizer(str, Enum):
 def summarize_paper(
     paper: Paper,
     level: KnowledgeLevel,
-    summarizer: Summarizer = Summarizer.GEMINI_SUMMARIZER
+    summarizer: Summarizer = Summarizer.GEMINI_SUMMARIZER,
 ) -> PaperSummary:
     if summarizer == Summarizer.GEMINI_SUMMARIZER:
         summarizer = GeminiSummarizer()

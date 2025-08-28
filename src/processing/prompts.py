@@ -26,7 +26,7 @@ def build_prompt(abstract: str, level: KnowledgeLevel) -> str:
         ),
         KnowledgeLevel.RESEARCHER: (
             "Summarize this research paper for a professional or researcher in the field. "
-            "Include technical details, key findings, limitations, implications as well as other technical remarks that are relevant."
+            "Include technical details, key findings, limitations, implications as well as other technical aspects."
         ),
     }
 

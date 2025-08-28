@@ -1,7 +1,5 @@
-
 import logging
 from pydantic_settings import BaseSettings
-
 
 
 class Settings(BaseSettings):
@@ -15,10 +13,7 @@ class Settings(BaseSettings):
 
 # Logging configuration
 LOG_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-logging.basicConfig(
-    level=logging.INFO,
-    format=LOG_FORMAT
-)
+logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 logger = logging.getLogger("arxiv_summarizer")
 
 settings = Settings()

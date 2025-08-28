@@ -1,5 +1,5 @@
 from src.database import Base
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean, text
+from sqlalchemy import Column, Integer, String, TIMESTAMP, text
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
@@ -13,7 +13,7 @@ class Paper(Base):
     url = Column(String, nullable=False, unique=True)
     authors = Column(String, nullable=False)  # Comma-separated list
     published_date = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text("now()"))
     summaries = relationship("Summary", back_populates="paper")
 
 
@@ -25,5 +25,5 @@ class Summary(Base):
     knowledge_level = Column(String, nullable=False)
     summarizer = Column(String, nullable=False)
     summary = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text("now()"))
     paper = relationship("Paper", back_populates="summaries")

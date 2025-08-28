@@ -8,7 +8,10 @@ SOURCES = {
     "arxiv": ArxivSource(),
 }
 
-def fetch_papers(topic: str, max_results: int = 5, source: str = "arxiv") -> List[Paper]:
+
+def fetch_papers(
+    topic: str, max_results: int = 5, source: str = "arxiv"
+) -> List[Paper]:
     if source not in SOURCES:
         raise ValueError(f"Unknown source '{source}'")
 

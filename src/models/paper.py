@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel, field_validator
 from typing import List, Any
 
@@ -10,7 +9,7 @@ class Paper(BaseModel):
     authors: List[str]
     published_date: str
 
-    @field_validator('authors', mode='before')
+    @field_validator("authors", mode="before")
     @classmethod
     def split_authors(cls, v: Any) -> List[str]:
         if isinstance(v, str):
@@ -28,7 +27,7 @@ class PaperSummary(BaseModel):
     summary: str
     url: str
 
-    @field_validator('authors', mode='before')
+    @field_validator("authors", mode="before")
     @classmethod
     def split_authors(cls, v: Any) -> List[str]:
         if isinstance(v, str):
