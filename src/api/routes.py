@@ -39,17 +39,6 @@ def validate_topic(topic: str) -> str:
     return topic
 
 
-def validate_max_results(max_results: int) -> int:
-    """Validate the max_results parameter."""
-    if max_results < 1:
-        logger.warning("Validation failed: max_results < 1")
-        raise HTTPException(status_code=400, detail="max_results must be at least 1")
-    if max_results > 10:
-        logger.warning("Validation failed: max_results > 10")
-        raise HTTPException(status_code=400, detail="max_results cannot exceed 50")
-    return max_results
-
-
 def validate_source(source: str) -> str:
     """Validate and sanitize the source parameter."""
     if not source or not source.strip():
@@ -92,7 +81,6 @@ def get_papers(
     Store them in the database if not already present.
     """
     topic = validate_topic(topic)
-    max_results = validate_max_results(max_results)
     source = validate_source(source)
 
     try:

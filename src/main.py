@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
-
+from contextlib import asynccontextmanager
 
 from src.api.routes import router as api_router, limiter
 from src.database.connection import init_db
@@ -30,9 +30,10 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, custom_rate_limit_handler)
 
 
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     init_db()
+    yield
 
 
 # app.add_middleware(

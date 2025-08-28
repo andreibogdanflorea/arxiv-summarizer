@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict
 from typing import List, Any
 
 
@@ -16,8 +16,7 @@ class Paper(BaseModel):
             return [a.strip() for a in v.split(",") if a.strip()]
         return v
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PaperSummary(BaseModel):
@@ -34,5 +33,4 @@ class PaperSummary(BaseModel):
             return [a.strip() for a in v.split(",") if a.strip()]
         return v
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
