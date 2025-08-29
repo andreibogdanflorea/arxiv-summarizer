@@ -102,3 +102,64 @@ def test_get_papers_generic_exception(mock_fetch_papers):
     )
     assert response.status_code == 500
     assert "unexpected error" in response.text
+
+
+@patch(
+    "src.api.routes.fetch_papers", side_effect=ValueError("Unknown source 'notarxiv'")
+)
+def test_get_papers_unsupported_source(mock_fetch_papers):
+    response = client.get(
+        "/api/papers", params={"topic": "AI", "max_results": 1, "source": "notarxiv"}
+    )
+    assert response.status_code == 400
+    assert "Unknown source" in response.text
+
+
+def test_get_papers_missing_topic():
+    response = client.get("/api/papers", params={"max_results": 1, "source": "arxiv"})
+    assert response.status_code == 422
+
+
+def test_get_papers_source_empty():
+    response = client.get(
+        "/api/papers", params={"topic": "AI", "max_results": 1, "source": ""}
+    )
+    assert response.status_code == 422
+
+
+def test_get_papers_whitespace_source():
+    response = client.get(
+        "/api/papers", params={"topic": "AI", "max_results": 1, "source": "   "}
+    )
+    assert response.status_code == 400
+    assert "Source cannot be empty" in response.text
+
+
+def test_get_papers_source_too_long():
+    long_source = "a" * 51
+    response = client.get(
+        "/api/papers", params={"topic": "AI", "max_results": 1, "source": long_source}
+    )
+    assert response.status_code == 422
+
+
+@patch("src.api.routes.fetch_papers")
+@patch("src.api.routes.PaperService.get_papers_and_store")
+def test_get_papers_default_source(mock_get_papers_and_store, mock_fetch_papers):
+    # Should use default source="arxiv"
+    mock_papers = [
+        {
+            "title": "Test Paper",
+            "abstract": "Test abstract",
+            "url": "http://arxiv.org/abs/1234.5678",
+            "authors": ["Alice", "Bob"],
+            "published_date": "2023-01-01",
+        }
+    ]
+    mock_fetch_papers.return_value = mock_papers
+    mock_get_papers_and_store.return_value = mock_papers
+    response = client.get("/api/papers", params={"topic": "AI", "max_results": 1})
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+    assert data[0]["title"] == "Test Paper"

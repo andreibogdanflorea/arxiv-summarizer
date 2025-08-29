@@ -49,7 +49,7 @@ class PaperService:
         stored_papers = []
         for paper in papers:
             db_paper = PaperService.get_or_create_paper(db, paper)
-            stored_paper = Paper.from_orm(db_paper)
+            stored_paper = Paper.model_validate(db_paper)
             stored_paper.authors = db_paper.authors.split(",")
             stored_papers.append(stored_paper)
         logger.info(f"Stored {len(stored_papers)} papers in DB.")
@@ -68,9 +68,13 @@ class PaperService:
         )
         if cached:
             logger.info("Returning cached summary.")
-            summary = PaperSummary.from_orm(db_paper)
-            summary.summary = cached.summary
-            summary.authors = db_paper.authors.split(",")
+            summary = PaperSummary(
+                title=db_paper.title,
+                authors=db_paper.authors.split(","),
+                published_date=db_paper.published_date,
+                url=db_paper.url,
+                summary=cached.summary,
+            )
             return summary
 
         logger.info("No cached summary found, generating new summary.")
